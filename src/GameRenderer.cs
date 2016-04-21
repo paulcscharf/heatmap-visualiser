@@ -14,6 +14,9 @@ namespace Game
         private int width;
         private int height;
 
+        Heatmap heatMap;
+
+
         public GameRenderer()
         {
             this.shaderMan = new ShaderManager();
@@ -23,6 +26,8 @@ namespace Game
             this.surfaces = new SurfaceManager(this.shaderMan);
 
             new GeometryManager(this.surfaces);
+
+            this.heatMap = new Heatmap(this.shaderMan, this.surfaces);
         }
 
 
@@ -33,7 +38,7 @@ namespace Game
                 this.resize(width, height);
             }
 
-            GL.ClearColor(0.2f, 0.2f, 0.2f, 0);
+            GL.ClearColor(0, 0, 1, 0);
             GL.Clear(ClearBufferMask.ColorBufferBit);
         }
 
@@ -51,11 +56,11 @@ namespace Game
         {
             const float zNear = 0.1f;
             const float zFar = 256f;
-            const float fovy = GameMath.PiOver4;
+            const float fovy = Mathf.PiOver4;
 
             var ratio = (float)width / height;
 
-            var yMax = zNear * GameMath.Tan(0.5f * fovy);
+            var yMax = zNear * Mathf.Tan(0.5f * fovy);
             var yMin = -yMax;
             var xMin = yMin * ratio;
             var xMax = yMax * ratio;
@@ -68,7 +73,7 @@ namespace Game
         public void Draw(GameState game)
         {
             this.surfaces.ModelviewMatrix.Matrix = Matrix4.LookAt(
-                new Vector3(0, 0, 50), new Vector3(0, 0, 0), new Vector3(0, 1, 0)
+                new Vector3(0, 0, 0.9f), new Vector3(0, 0, 0), new Vector3(0, 1, 0)
                 );
 
             game.Render();
@@ -76,8 +81,31 @@ namespace Game
 
         public void FinaliseFrame()
         {
-            SurfaceDepthMaskSetting.DontMask.Set(null);
+            GL.DepthMask(false);
+            GL.Disable(EnableCap.CullFace);
+            GL.Disable(EnableCap.DepthTest);
+
+            SurfaceBlendSetting.Add.Set(null);
+
+            this.heatMap.Bind();
+
+            this.surfaces.Agents.Render();
+
+
+            this.heatMap.Blur();
+
+
             SurfaceBlendSetting.PremultipliedAlpha.Set(null);
+
+            GL.Viewport(0, 0, width, height);
+            this.heatMap.RenderTo(null);
+
+
+            SurfaceBlendSetting.Add.Set(null);
+
+            GeometryManager.Instance.Blueprint.DrawSprite(new Vector2(), 0, 1);
+            this.surfaces.Blueprint.Render();
+
 
             this.surfaces.Primitives.Render();
             this.surfaces.Text.Render();

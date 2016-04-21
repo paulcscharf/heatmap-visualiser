@@ -10,11 +10,19 @@ namespace Game
         private readonly DeletableObjectList<GameObject> gameObjects = new DeletableObjectList<GameObject>();
         private Instant time = Instant.Zero;
 
+
+
+        Connection connection;
         public Instant Time { get { return this.time; } }
 
         public GameState()
         {
-            
+            for (int i = 0; i < 5; i++)
+            {
+                //new RandomAgent(this);
+            }
+
+            this.connection = new Connection(this);
         }
 
         public void Add(GameObject gameObject)
@@ -27,6 +35,8 @@ namespace Game
             var elapsedTime = new TimeSpan(args.ElapsedTimeInS);
 
             this.time += elapsedTime;
+
+            this.connection.Update();
 
 
             foreach (var gameObject in this.gameObjects)
