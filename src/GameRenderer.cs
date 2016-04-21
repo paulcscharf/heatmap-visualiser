@@ -38,7 +38,7 @@ namespace Game
                 this.resize(width, height);
             }
 
-            GL.ClearColor(0, 0, 1, 0);
+            GL.ClearColor(1, 1, 1, 0);
             GL.Clear(ClearBufferMask.ColorBufferBit);
         }
 
@@ -73,7 +73,7 @@ namespace Game
         public void Draw(GameState game)
         {
             this.surfaces.ModelviewMatrix.Matrix = Matrix4.LookAt(
-                new Vector3(0, 0, 0.9f), new Vector3(0, 0, 0), new Vector3(0, 1, 0)
+                new Vector3(0, 0, 1.5f), new Vector3(-0, 0, 0), new Vector3(-1, 0, 0)
                 );
 
             game.Render();
@@ -101,9 +101,9 @@ namespace Game
             this.heatMap.RenderTo(null);
 
 
-            SurfaceBlendSetting.Add.Set(null);
+            SurfaceBlendSetting.Multiply.Set(null);
 
-            GeometryManager.Instance.Blueprint.DrawSprite(new Vector2(), 0, 1);
+            GeometryManager.Instance.Blueprint.DrawSprite(new Vector2(0, -0.18f), 0, 0.95f);
             this.surfaces.Blueprint.Render();
 
 

@@ -76,6 +76,10 @@ namespace Game
                 this.reconnectTime = this.game.Time + new Bearded.Utilities.SpaceTime.TimeSpan(2);
             }
 
+            this.updateQueue.Enqueue(new AgentUpdate { Device = "derp", X = 0, Y = 0 });
+            this.updateQueue.Enqueue(new AgentUpdate { Device = "derp2", X = 0, Y = 8 });
+            this.updateQueue.Enqueue(new AgentUpdate { Device = "derp3", X = 6, Y = 0 });
+
 
             AgentUpdate update;
             while (this.updateQueue.TryDequeue(out update))
@@ -86,7 +90,10 @@ namespace Game
 
         private void apply(AgentUpdate update)
         {
-            var p = new Position2(update.X / 10, update.Y / 10);
+            const float xSize = 8;
+            const float ySize = 6;
+
+            var p = new Position2(update.Y / (xSize / 1.8f) - 0.9f, update.X / (xSize / 1.8f) - 0.9f);
             Agent agent;
             if (!this.agents.TryGetValue(update.Device, out agent) || agent.Deleted)
             {

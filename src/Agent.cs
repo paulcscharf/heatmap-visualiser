@@ -65,7 +65,7 @@ namespace Game
         {
             var geo = GeometryManager.Instance.Agents;
 
-            geo.Draw(this.position.NumericValue, new Vector2(0.1f));
+            geo.Draw(this.position.NumericValue, new Vector2(0.08f));
         }
 
         protected override void onDelete()

@@ -24,7 +24,7 @@ namespace Game
             this.Agents = new HeatmapGeometry(surfaces.Agents);
 
             this.Blueprint = new Sprite2DGeometry(surfaces.Blueprint);
-            this.Blueprint.Size = new Vector2(1f, 0.6f);
+            this.Blueprint.Size = new Vector2(1.2f, -0.7f);
 
         }
 

@@ -43,7 +43,7 @@ namespace Game
 
             this.Blueprint = new IndexedSurface<UVColorVertexData>();
             this.Blueprint.AddSettings(this.ProjectionMatrix, this.ModelviewMatrix,
-                                       new TextureUniform("diffuseTexture", new Texture("data/images/room plan.png", true)));
+                                       new TextureUniform("diffuseTexture", new Texture("data/images/room plan.jpg", true)));
             shaderMan["uvcolor"].UseOnSurface(this.Blueprint);
         }
 
